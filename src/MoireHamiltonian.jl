@@ -1,5 +1,9 @@
 module MoireHamiltonian
 
-# Write your package code here.
+using Plots
+
+include("lattice.jl")
+include("folding.jl")
+include("bilayer.jl")
 
 end
