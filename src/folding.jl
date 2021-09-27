@@ -16,7 +16,8 @@ struct Moire
     G₁ :: AbstractArray{Real}               # reciprocal lattice of layer 1
     G₂ :: AbstractArray{Real}               # reciprocal lattice of layer 1
     numfold :: Int                          # fold k space of layer 2 for numfold times
-    matrix :: AbstractArray{ComplexF64}     # matrix for moire hamiltonian
+    M :: Int                          # fold k space of layer 2 for numfold times
+    #matrix :: AbstractArray{ComplexF64}     # matrix for moire hamiltonian
 
     function Moire(Gmax,nmax,lattice₁,lattice₂)
         function make_fold(Gmax,nmax,b)
@@ -40,7 +41,7 @@ struct Moire
             G₁,
             similar(G₁),
             size(G₁,1),
-            Array{ComplexF64}(undef,lattice₁.M + size(G₁,1)*lattice₂.M,lattice₁.M + size(G₁,1)*lattice₂.M)
+            lattice₁.M+lattice₂.M*size(G₁,1)
         )
     end
 end
@@ -51,7 +52,7 @@ end
 """
 function lattice_img(Moire,lattice₁)
     @unpack a, τ, b, Ham!, M= lattice₁
-    @unpack fold, G₁, G₂, numfold, matrix = Moire
+    @unpack fold, G₁, G₂, numfold , M = Moire
     
     p1 = plot(title = "Lattice") ; p2 = plot(title="Reciprocal lattice");
     lat = fold*a' ; G = fold*b
